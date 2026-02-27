@@ -1,0 +1,11 @@
+<button
+  type="{{ type }}"
+  [ngClass]="{
+    'app-button': true,
+    'app-button__outline': variant === 'outline',
+    'app-button__gray': color === 'gray',
+  }"
+>
+  <fa-icon *ngIf="iconName" [icon]="iconName" [size]="size"></fa-icon>
+  <span *ngIf="buttonText">{{ buttonText }}</span>
+</button>

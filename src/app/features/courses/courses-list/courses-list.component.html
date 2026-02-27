@@ -1,0 +1,19 @@
+<app-course-card
+  *ngFor="let singleCourse of courses; trackBy: trackByCourseId"
+  [course]="singleCourse"
+  [editable]="true"
+  (clickOnShow)="onShowCourse(singleCourse)"
+>
+  <app-button
+    [iconName]="'trash-can'"
+    [variant]="'outline'"
+    [size]="'xl'"
+    (click)="onDeleteCourse(singleCourse)"
+  ></app-button>
+  <app-button
+    [iconName]="'pencil'"
+    [variant]="'outline'"
+    [size]="'xl'"
+    (click)="onEditCourse(singleCourse)"
+  ></app-button>
+</app-course-card>

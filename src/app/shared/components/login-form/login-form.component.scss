@@ -1,0 +1,17 @@
+@import "src/app/shared/styles/styles.scss";
+
+.login-form {
+  width: 260px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .form__action {
+    margin-top: 30px;
+  }
+
+  .form__text {
+    margin-top: 40px;
+  }
+}

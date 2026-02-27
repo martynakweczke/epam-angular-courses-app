@@ -1,0 +1,27 @@
+<ng-container>
+  <!-- Search component -->
+  <app-search (search)="onSearch($event)"></app-search>
+
+  <!-- Info component -->
+  <ng-container *ngIf="courses.length === 0">
+    <app-info [title]="infoTitle" [text]="infoText">
+      <app-button [buttonText]="infoButtonText"></app-button>
+    </app-info>
+  </ng-container>
+
+  <!-- Course List component -->
+  <app-courses-list
+    [courses]="courses"
+    [editable]="true"
+    (showCourse)="showCourse($event)"
+    (editCourse)="editCourse($event)"
+    (deleteCourse)="deleteCourse($event)"
+  ></app-courses-list>
+
+  <ng-container *ngIf="selectedCourse">
+    <app-course-info
+      [course]="selectedCourse"
+      (backClick)="closeSelectedCourse()"
+    ></app-course-info>
+  </ng-container>
+</ng-container>

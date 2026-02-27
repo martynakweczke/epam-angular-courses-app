@@ -1,0 +1,111 @@
+<h2 class="text-align-center">Registration</h2>
+<div class="app-plate">
+  <div class="registration-form">
+    <form
+      [formGroup]="registrationForm"
+      class="registrationForm"
+      #registrationFormRef="ngForm"
+      (ngSubmit)="registrationForm.valid && onSubmit()"
+    >
+      <div class="form__control">
+        <label for="name">Name</label>
+        <!--Use the name `name` for the form control.-->
+        <input
+          type="text"
+          id="name"
+          placeholder="Input text"
+          formControlName="name"
+        />
+        <div
+          *ngIf="
+            (registrationFormRef.submitted || name?.touched) && name?.errors
+          "
+          id="nameErrorMessage"
+          class="text-danger"
+        >
+          <div *ngIf="name?.errors?.['required']">Name is required.</div>
+          <div *ngIf="name?.errors?.['minlength']">
+            Min name length is
+            {{ name?.errors?.["minlength"]["requiredLength"] }}.
+          </div>
+        </div>
+      </div>
+      <div class="form__control">
+        <!--Use the name `email` for the form control.-->
+        <label for="email">Email</label>
+        <input
+          type="text"
+          id="email"
+          placeholder="Input text"
+          formControlName="email"
+          emailValidator
+        />
+        <div
+          *ngIf="
+            (registrationFormRef.submitted || email?.touched) && email?.errors
+          "
+          id="emailErrorMessage"
+          class="text-danger"
+        >
+          <div *ngIf="email?.errors?.['required']">Email is required.</div>
+          <div *ngIf="email?.errors?.['emailInvalid']">Email is invalid.</div>
+        </div>
+      </div>
+      <div class="form__control">
+        <!--Use the name `password` for the form control.-->
+        <label for="password">Password</label>
+        <div class="password__container">
+        <input
+          type="password"
+          id="password"
+          placeholder="Input text"
+          class="password__input"
+          formControlName="password"
+          togglePassword
+          #togglePassword="togglePassword"
+        />
+        <button
+          type="button"
+          class="password__toggle-button"
+          (click)="togglePassword.toggle()"
+        >
+          <img
+            src="{{
+              togglePassword.isVisible
+                ? 'assets/eye-off-icon.svg'
+                : 'assets/eye-icon.svg'
+            }}"
+          />
+        </button>
+        </div>
+        <div
+          id="passwordErrorMessage"
+          class="text-danger"
+          *ngIf="
+            (registrationFormRef.submitted || password?.touched) &&
+            password?.errors
+          "
+          id="passwordErrorMessage"
+          class="text-danger"
+        >
+          <div *ngIf="password?.errors?.['required']">
+            Password is required.
+          </div>
+        </div>
+      </div>
+      <div class="form__action">
+        <app-button [buttonText]="'Register'"></app-button>
+      </div>
+      <div class="form__text">
+        If you have an account you may
+        <strong
+          class="on-login-button"
+          role="button"
+          tabindex="0"
+          (click)="onLogin()"
+          >Login</strong
+        >
+      </div>
+    </form>
+  </div>
+</div>

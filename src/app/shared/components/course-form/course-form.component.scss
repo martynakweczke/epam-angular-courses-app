@@ -1,0 +1,66 @@
+@import "src/app/shared/styles/styles";
+
+.course {
+  min-width: 60vw;
+
+  &__flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    & input {
+      flex: 1;
+    }
+
+    & app-button {
+      margin-left: 16px;
+    }
+
+    & .course__duration {
+      margin-left: 16px;
+    }
+  }
+
+  &__duration_display {
+    margin-left: 16px;
+  }
+
+  &__authors-container {
+    display: flex;
+    gap: 32px;
+    justify-content: space-between;
+  }
+
+  &__authors {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__empty-list {
+      font-size: 16px;
+    }
+
+    &-item {
+      margin-right: 10px;
+    }
+
+    &__list {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__icon {
+    margin-left: 4px;
+    cursor: pointer;
+  }
+
+  &__form {
+    &__action {
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+    }
+  }
+}
