@@ -1,3 +1,7 @@
+# EPAM's Angular Frontend Specialization project
+
+This is a repository I reused and developed during the EPAM System's Angular Frontend Specialization program. It is a course management system with authentication and authorization features, routing and API communication layer using HttpClient. The project is built with Angular and uses NgRx for state management.
+
 # Angularfundamentalstemplate
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.4.
