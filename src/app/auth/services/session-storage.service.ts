@@ -1,6 +1,9 @@
 import { Injectable, Inject, InjectionToken } from "@angular/core";
 
-export const WINDOW = new InjectionToken<Window>("WindowToken");
+export const WINDOW = new InjectionToken<Window>("WindowToken", {
+  providedIn: 'root',
+  factory: () => window
+});
 
 const TOKEN = "SESSION_TOKEN"; 
 @Injectable({

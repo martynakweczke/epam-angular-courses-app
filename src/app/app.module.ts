@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { HttpClientModule } from "@angular/common/http";
 import { SharedModule } from "@shared/shared.module";
 import { AppComponent } from "@app/app.component";
 import { NotAuthorizedGuard } from "@app/auth/guards/not-authorized.guard";
@@ -12,6 +13,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { WINDOW } from "@app/auth/services/session-storage.service";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { TokenInterceptor } from "@app/auth/interceptors/token.interceptor";
+import { UserModule } from "./user/user.module";
 
 export function windowFactory(): Window {
   return window;
@@ -21,10 +23,12 @@ export function windowFactory(): Window {
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     SharedModule,
     FontAwesomeModule,
     CoursesModule,
+    UserModule,
   ],
   providers: [
     AuthorizedGuard,

@@ -23,7 +23,7 @@ type CourseFilter = {
   providedIn: "root",
 })
 export class CoursesService {
-  private readonly API_URL = "http://localhost:4000/api";
+  private readonly API_URL = "http://localhost:4000";
 
   constructor(private http: HttpClient) {}
 

@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { ApiResponse } from "@app/services/services.types";
 
 export type User = {
   id: string;
@@ -12,10 +13,10 @@ export type User = {
   providedIn: "root",
 })
 export class UserService {
-  private readonly API_URL = "http://localhost:4000/api";
+  private readonly API_URL = "http://localhost:4000";
   constructor(private http: HttpClient) {}
 
   getUser() {
-    return this.http.get<User>(`${this.API_URL}/users/me`);
+    return this.http.get<ApiResponse<User>>(`${this.API_URL}/users/me`);
   }
 }

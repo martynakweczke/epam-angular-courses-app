@@ -19,7 +19,8 @@ export class UserStoreService {
     this.userService
       .getUser()
       .pipe(
-        tap((user: User) => {
+        tap((response) => {
+          const user = response.result;
           this.name$$.next(user.name ?? null);
           this.isAdmin$$.next(user.role === "admin");
         }),
@@ -34,5 +35,9 @@ export class UserStoreService {
   set isAdmin(value: boolean) {
     this.isAdmin$$.next(value);
   }
-  
+
+  clearUser() {
+    this.name$$.next(null);
+    this.isAdmin$$.next(false);
+  }
 }

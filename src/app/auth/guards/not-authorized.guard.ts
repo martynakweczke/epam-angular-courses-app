@@ -7,7 +7,6 @@ import {
   RouterStateSnapshot,
 } from "@angular/router";
 import { AuthService } from "../services/auth.service";
-import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -18,10 +17,7 @@ export class NotAuthorizedGuard implements CanActivate {
     private router: Router,
   ) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
-  ): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (!this.authService.isAuthorized) {
       return true;
     } else {

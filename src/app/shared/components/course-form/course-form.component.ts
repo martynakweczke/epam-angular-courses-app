@@ -7,6 +7,9 @@ import {
   FormArray,
   Form,
 } from "@angular/forms";
+import { Router, ActivatedRoute } from "@angular/router";
+import { Author } from "@app/features/courses/courses.types";
+import { CoursesStoreService } from "@app/services/courses-store.service";
 import { FaIconLibrary } from "@fortawesome/angular-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 
@@ -26,15 +29,14 @@ type NewAuthorFormGroup = FormGroup<{
 })
 export class CourseFormComponent implements OnInit {
   courseForm!: FormGroup;
-
-  mockedAuthors = [
-    { id: "1", name: "J.K. Rowling" },
-    { id: "2", name: "George R.R. Martin" },
-  ];
+  isEditMode = false;
 
   constructor(
     public fb: FormBuilder,
     public library: FaIconLibrary,
+    private coursesStore: CoursesStoreService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {
     this.courseForm = this.fb.group({
       title: ["", [Validators.required, Validators.minLength(2)]],
@@ -54,13 +56,53 @@ export class CourseFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.mockedAuthors.forEach((author) => {
-      const authorGroup = this.fb.group({
-        id: [author.id, Validators.required],
-        name: [author.name, Validators.required],
-      }) as AuthorFormGroup;
+    const courseIdParam = this.route.snapshot.paramMap.get("id");
 
-      this.authors.push(authorGroup);
+    this.isEditMode = !!courseIdParam;
+
+    this.coursesStore.getAllAuthors();
+
+    this.coursesStore.authors$.subscribe((authors) => {
+      this.authors.clear();
+
+      authors.forEach((author) => {
+        const authorGroup = this.fb.group({
+          id: [author.id, Validators.required],
+          name: [author.name, Validators.required],
+        }) as AuthorFormGroup;
+
+        this.authors.push(authorGroup);
+      });
+
+      if (courseIdParam) {
+        this.loadCourseForEditing(courseIdParam);
+      }
+    });
+  }
+
+  private loadCourseForEditing(id: string) {
+    this.coursesStore.getCourse(id).subscribe((course) => {
+      if (course) {
+        this.courseForm.patchValue({
+          title: course.title,
+          description: course.description,
+          duration: course.duration,
+        });
+
+        // Handle Authors: Find full author objects based on IDs in the course
+        const allAvailableAuthors = this.authors.controls;
+
+        course.authors.forEach((authorId) => {
+          const matchedAuthor = allAvailableAuthors.find(
+            (availableAuthorControl) =>
+              availableAuthorControl.value.id === authorId,
+          );
+
+          if (matchedAuthor) {
+            this.addAuthorToCourse(matchedAuthor);
+          }
+        });
+      }
     });
   }
 
@@ -99,22 +141,40 @@ export class CourseFormComponent implements OnInit {
       return;
     }
 
-    const newAuthorGroup = this.fb.group({
-      id: [crypto.randomUUID()],
-      name: [name, Validators.required],
-    }) as AuthorFormGroup;
-
-    this.authors.push(newAuthorGroup);
+    this.coursesStore.createAuthor(name);
 
     this.newAuthor.reset();
   }
 
-  onSubmit() {
-    console.log(this.courseForm.value);
+  onCancel() {
+    this.courseForm.reset();
+    this.router.navigate(["/courses"]);
+  }
 
+  onSubmit() {
     if (this.courseForm.invalid) {
       return;
     }
+
+    const { title, description, duration, courseAuthors } =
+      this.courseForm.value;
+
+    const courseData = {
+      title,
+      description,
+      duration: Number(duration),
+      authors: (courseAuthors as Author[]).map((author) => author.id),
+    };
+
+    const courseId = this.route.snapshot.paramMap.get("id");
+
+    if (courseId) {
+      this.coursesStore.editCourse(courseId, courseData);
+    } else {
+      this.coursesStore.createCourse(courseData);
+    }
+
+    this.router.navigate(["/courses"]);
   }
 
   addAuthorToCourse(author: AuthorFormGroup) {

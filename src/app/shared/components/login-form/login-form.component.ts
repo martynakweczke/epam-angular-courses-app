@@ -1,5 +1,10 @@
 import { Component, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import { Router } from "@angular/router";
+import { AuthService } from "@app/auth/services/auth.service";
+import { UserStoreService } from "@app/user/services/user-store.service";
+import { EMPTY } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
 
 @Component({
   selector: "app-login-form",
@@ -8,16 +13,34 @@ import { NgForm } from "@angular/forms";
 })
 export class LoginFormComponent {
   @ViewChild("loginForm") public loginForm!: NgForm;
-  //Use the names `email` and `password` for form controls.
+
+  constructor(
+    private authService: AuthService,
+    private userStoreService: UserStoreService,
+    private router: Router,
+  ) {}
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
       return;
     }
 
-    const email = this.loginForm.value.email;
-    const password = this.loginForm.value.password;
-    console.log("Email:", email);
-    console.log("Password:", password);
+    const { email, password } = this.loginForm.value;
+
+    this.authService
+      .login({ email, password })
+      .pipe(
+        tap((response) => {
+          if (response.successful) {
+          this.userStoreService.getUser();
+            this.router.navigate(["/courses"]);
+          }
+        }),
+        catchError((error) => {
+          console.error("Login error:", error);
+          return EMPTY;
+        }),
+      )
+      .subscribe();
   }
 }

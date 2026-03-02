@@ -9,7 +9,6 @@
     >
       <div class="form__control">
         <label for="name">Name</label>
-        <!--Use the name `name` for the form control.-->
         <input
           type="text"
           id="name"
@@ -31,7 +30,6 @@
         </div>
       </div>
       <div class="form__control">
-        <!--Use the name `email` for the form control.-->
         <label for="email">Email</label>
         <input
           type="text"
@@ -52,31 +50,30 @@
         </div>
       </div>
       <div class="form__control">
-        <!--Use the name `password` for the form control.-->
         <label for="password">Password</label>
         <div class="password__container">
-        <input
-          type="password"
-          id="password"
-          placeholder="Input text"
-          class="password__input"
-          formControlName="password"
-          togglePassword
-          #togglePassword="togglePassword"
-        />
-        <button
-          type="button"
-          class="password__toggle-button"
-          (click)="togglePassword.toggle()"
-        >
-          <img
-            src="{{
-              togglePassword.isVisible
-                ? 'assets/eye-off-icon.svg'
-                : 'assets/eye-icon.svg'
-            }}"
+          <input
+            type="password"
+            id="password"
+            placeholder="Input text"
+            class="password__input"
+            formControlName="password"
+            togglePassword
+            #togglePassword="togglePassword"
           />
-        </button>
+          <button
+            type="button"
+            class="password__toggle-button"
+            (click)="togglePassword.toggle()"
+          >
+            <img
+              src="{{
+                togglePassword.isVisible
+                  ? 'assets/eye-off-icon.svg'
+                  : 'assets/eye-icon.svg'
+              }}"
+            />
+          </button>
         </div>
         <div
           id="passwordErrorMessage"
@@ -98,13 +95,9 @@
       </div>
       <div class="form__text">
         If you have an account you may
-        <strong
-          class="on-login-button"
-          role="button"
-          tabindex="0"
-          (click)="onLogin()"
-          >Login</strong
-        >
+        <a href="/login">
+          <strong>Login</strong>
+        </a>
       </div>
     </form>
   </div>

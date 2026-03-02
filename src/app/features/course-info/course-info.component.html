@@ -1,6 +1,7 @@
 <!-- Replace ::text:: with your code -->
 
-<div class="title">{{ course.title }}</div>
+<ng-container *ngIf="course">
+  <div class="title">{{ course.title }}</div>
 <div class="course-info">
   <div class="course-info__description">
     {{ course.description }}
@@ -17,12 +18,14 @@
     </div>
     <div>
       <b>Created: </b
-      ><span class="course-info__info-date">{{ course.creationDate | customDate }}</span>
+      ><span class="course-info__info-date">{{
+        course.creationDate | customDate
+      }}</span>
     </div>
     <div>
       <b>Authors: </b
       ><span class="course-info__info-authors">{{
-        course.authors.join(", ")
+        courseAuthors.join(", ")
       }}</span>
     </div>
   </div>
@@ -31,3 +34,4 @@
   <!--Enter your code here-->
   <app-button [buttonText]="'Back'" (click)="onBackClick()"></app-button>
 </div>
+</ng-container>

@@ -194,7 +194,7 @@
     </div>
   </div>
   <div [ngClass]="['form__action', 'course__form__action']">
-    <app-button [buttonText]="'Cancel'"></app-button>
-    <app-button [buttonText]="'Create Course'"></app-button>
+    <app-button [buttonText]="'Cancel'" (click)="onCancel()"></app-button>
+    <app-button [buttonText]="isEditMode ? 'Edit Course' : 'Create Course'" (click)="onSubmit()"></app-button>
   </div>
 </form>

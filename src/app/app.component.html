@@ -1,6 +1,11 @@
 <app-header>
-  <p>{{ userName }}</p>
-  <app-button [buttonText]="loginButtonText"></app-button>
+  <ng-container *ngIf="isAuthorized$ | async as isAuthorized; else loginView">
+    <p>{{ name$ | async }}</p>
+    <app-button [buttonText]="'Logout'" (click)="handleLogout()"></app-button>
+  </ng-container>
+  <ng-template #loginView>
+    <app-button [buttonText]="'Login'" (click)="handleLogin()"></app-button>
+  </ng-template>
 </app-header>
 <div class="app-root">
   <router-outlet></router-outlet>

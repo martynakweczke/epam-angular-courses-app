@@ -44,7 +44,6 @@ export class CoursesStoreService {
       )
       .subscribe();
   }
-  
 
   createCourse(course: Course) {
     this.isLoading$$.next(true);
@@ -67,7 +66,6 @@ export class CoursesStoreService {
       .subscribe();
   }
 
-
   getCourse(id: string) {
     this.isLoading$$.next(true);
 
@@ -86,7 +84,6 @@ export class CoursesStoreService {
       finalize(() => this.isLoading$$.next(false)),
     );
   }
-
 
   editCourse(id: string, course: Course) {
     this.isLoading$$.next(true);
@@ -109,7 +106,6 @@ export class CoursesStoreService {
       .subscribe();
   }
 
-
   deleteCourse(id: string) {
     this.isLoading$$.next(true);
     this.coursesService
@@ -124,7 +120,6 @@ export class CoursesStoreService {
       )
       .subscribe();
   }
-
 
   filterCourses(value: string) {
     if (!value.trim()) {
@@ -155,20 +150,22 @@ export class CoursesStoreService {
       .subscribe();
   }
 
-
   getAllAuthors() {
     this.isLoading$$.next(true);
-    return this.coursesService.getAllAuthors().pipe(
-      tap((response) => {
-        if (response.successful) {
-          this.authors$$.next(response.result);
-        }
-      }),
-      map((response) => (response.successful ? response.result : [])),
-      finalize(() => this.isLoading$$.next(false)),
-    );
-  }
 
+    this.coursesService
+      .getAllAuthors()
+      .pipe(
+        tap((response) => {
+          if (response.successful) {
+            this.authors$$.next(response.result);
+          }
+        }),
+        map((response) => (response.successful ? response.result : [])),
+        finalize(() => this.isLoading$$.next(false)),
+      )
+      .subscribe();
+  }
 
   createAuthor(name: string) {
     this.isLoading$$.next(true);

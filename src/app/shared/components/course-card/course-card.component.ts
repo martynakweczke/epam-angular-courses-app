@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { Course } from "@app/features/courses/courses.types";
+import { Author, Course } from "@app/features/courses/courses.types";
 
 @Component({
   selector: "app-course-card",
@@ -9,10 +9,19 @@ import { Course } from "@app/features/courses/courses.types";
 export class CourseCardComponent {
   @Input() course!: Course;
   @Input() editable = false;
+  @Input() allAuthors!: Author[];
 
   @Output() clickOnShow = new EventEmitter<void>();
 
-  onClickOnShow(){
+  courseAuthors: string[] = [];
+
+  ngOnChanges() {
+    this.courseAuthors = this.allAuthors
+      .filter((author) => this.course.authors?.includes(author.id))
+      .map((author) => author.name);
+  }
+
+  onClickOnShow() {
     this.clickOnShow.emit();
   }
 }

@@ -8,7 +8,6 @@
     >
       <div class="form__control">
         <label for="email">Email</label>
-        <!--Use the name `email` for the form control.-->
         <input
           type="text"
           id="email"
@@ -41,7 +40,6 @@
       </div>
       <div class="form__control">
         <label for="password">Password</label>
-        <!--Use the name `password` for the form control.-->
         <div class="password__container">
           <input
             type="password"
@@ -86,7 +84,7 @@
           <app-button [buttonText]="'Login'"></app-button>
         </div>
         <div class="form__text">
-          If you don't have an account you may <strong>Registration</strong>
+          If you don't have an account you may <a href="/registration"><strong>Registration</strong></a>
         </div>
       </div>
     </form>

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { BehaviorSubject, Observable } from "rxjs";
-import { tap } from "rxjs/operators";
+import { BehaviorSubject, throwError } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
 import { SessionStorageService } from "./session-storage.service";
 import { ApiResponse } from "@app/services/services.types";
 
@@ -20,15 +20,17 @@ interface RegisterRequest {
   providedIn: "root",
 })
 export class AuthService {
-  private readonly API_URL = "http://localhost:4000/api";
+  private readonly API_URL = "http://localhost:4000";
 
-  private readonly isAuthorized$$ = new BehaviorSubject<boolean>(this.hasToken());
+  private readonly isAuthorized$$ = new BehaviorSubject<boolean>(false);
   public isAuthorized$ = this.isAuthorized$$.asObservable();
 
   constructor(
     private http: HttpClient,
     private sessionStorageService: SessionStorageService,
-  ) {}
+  ) {
+    this.isAuthorized$$.next(this.hasToken());
+  }
 
   login(user: LoginRequest) {
     return this.http.post<ApiResponse<string>>(this.getLoginUrl(), user).pipe(
@@ -40,16 +42,18 @@ export class AuthService {
   }
 
   logout() {
-    this.http.delete(this.getLogoutUrl()).subscribe({
-      next: () => {
+    return this.http.delete(this.getLogoutUrl()).pipe(
+      tap(() => {
         this.sessionStorageService.deleteToken();
         this.isAuthorized = false;
-      },
-      error: () => {
+      }),
+      catchError((error) => {
+        console.error("Logout error", error);
         this.sessionStorageService.deleteToken();
         this.isAuthorized = false;
-      },
-    });
+        return throwError(() => error);
+      }),
+    );
   }
 
   register(user: RegisterRequest) {
